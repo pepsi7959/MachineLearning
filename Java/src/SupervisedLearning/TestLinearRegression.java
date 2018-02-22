@@ -56,25 +56,32 @@ public class TestLinearRegression {
 		inputs.add(x4);
 		inputs.add(x5);
 
+		LinkedList<Input> inputs2 = Input.fromFile("src\\SupervisedLearning\\inputs.csv");
+		LinkedList<Double> ev2 = Input.expectedValueFromFile("src\\SupervisedLearning\\ExpectedValue.csv");
 		// 2. Algorithm selection
-		LinearRegression LR = new LinearRegression(inputs, weight, ev);
+		LinearRegression LR = new LinearRegression(inputs2, weight, ev2);
 
+		double acceptedError = 100000;
 		for (int i = 0; i < step; i++) {
 			Matrix td = LR.train();
-			double err = Matrix.sum(td);
+			double err = Math.abs(Matrix.sum(td));
 			System.out.println("Error : " + err);
 
 			// 4. Evaluation
-			if (Math.abs(err) < 0.001) {
+			if (  err < 0.001 ) {
 				System.out.println("==============================");
 				System.out.println("Error rate: " + err);
 				System.out.print("Output ");
 				weight.Print();
 				System.out.println("Step : " + i);
 				break;
+			}else if( err > acceptedError){
+				System.out.println("==============================");
+				System.out.println("The error in not acceptable: "+err+" > "+acceptedError);
+				break;
 			}
 			// 3. Parameter Tunning
-			Optimizer.gradientDescent(inputs, lr, weight, td);
+			Optimizer.gradientDescent(inputs2, lr, weight, td);
 		}
 
 	}

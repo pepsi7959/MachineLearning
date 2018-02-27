@@ -22,7 +22,8 @@ public class LinearRegression {
 		int i = 0;
 		while( in.hasNext() ) {
 			//cost function
-			result = Matrix.dot(this.weight, in.next());
+			//Y = WX
+			result = Matrix.multiply(in.next(), this.weight);
 			err = result - this.expectedValue.get(i);
 			td.setData(i, 0,  err);
 			i++;

@@ -20,16 +20,22 @@ public class Input extends Matrix {
 		try {
 			
 			br = new BufferedReader(new FileReader(file));
-			String line = br.readLine();
-			System.out.println("header: ");
-
+			String header = br.readLine();
+			String line = "";
+			System.out.println("header: " + header);
+			int header_sz = header.split(",").length;
 			
 			while ((line = br.readLine()) != null) {
 				System.out.println(line);
 				String str[] = line.split(",");
-				Input m = new Input(str.length, 1);
-				m.setData(0, 0, Double.parseDouble(str[0].trim()));
-				m.setData(1, 0, Double.parseDouble(str[1].trim()));
+				if( str.length != header_sz ) {
+					br.close();
+					throw new RuntimeException(String.format("Invalid input: size of header is not match header(%s)\\{%d\\} input(%s)\\{%d\\}", header, header_sz, line, str.length));
+				}
+				Input m = new Input(1, str.length);
+				for( int i = 0 ; i < str.length ; i++) {
+					m.setData(0, i, Double.parseDouble(str[i].trim()));
+				}
 				inputs.addLast(m);
 			}
 			System.out.println("Number of elements : " + inputs.size());
@@ -42,6 +48,19 @@ public class Input extends Matrix {
 		return inputs;
 	}
 
+	public static Matrix getMatrix(LinkedList<Input> inputs) {
+		int row = inputs.size();
+		int col = inputs.get(0).col;
+		Matrix m = new Matrix(row, col);
+		for(int i = 0 ;i < row ; i++){
+			Matrix mAtRow = (Matrix)inputs.get(i);
+			for( int j = 0; j < col; j++) {
+				m.data[i][j] = mAtRow.getData(0, j);
+			}
+		}
+		return m;
+	}
+	
 	@Override
 	public void random(double min, double max) {
 		for (int i = 0; i < this.row; i++) {

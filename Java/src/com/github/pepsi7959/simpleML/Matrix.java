@@ -215,4 +215,15 @@ public class Matrix {
 		double det = det(m);
 		return multiply(m, 1/det);
 	}
+
+	public void copyTo(Matrix m) {
+		if( this.col != m.col || this.row != m.row) {
+			throw new RuntimeException("Matrix is not the same dimension");
+		}
+		for (int i = 0; i < this.row; i++) {
+			for (int j = 0; j < this.col; j++) {
+				m.data[i][j] = this.data[i][j];
+			}
+		}
+	}
 }

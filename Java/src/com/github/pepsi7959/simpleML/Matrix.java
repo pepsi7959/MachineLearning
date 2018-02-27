@@ -74,7 +74,7 @@ public class Matrix {
 	// c = a * b
 	public static double multiply(Matrix a, Matrix b) {
 		if (a.col != b.row) {
-			throw new RuntimeException("Illigal Vector dimensions");
+			throw new RuntimeException("Illigal Vector dimensions "+a.col+":"+b.row);
 		}
 		double sum = 0.0;
 		for (int i = 0; i < a.row; i++) {

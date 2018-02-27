@@ -3,37 +3,51 @@ package com.github.pepsi7959.simpleML;
 import java.text.DecimalFormat;
 
 public class Matrix {
-	
-	public Object[][] data;
+
+	public double[][] data;
 	protected int row = 0;
 	protected int col = 0;
 
 	public Matrix(int row, int col) {
 		this.row = row;
 		this.col = col;
-		this.data = new Object[row][col];
+		this.data = new double[row][col];
 		setZeros(0);
 	}
-	
+
 	public Matrix(int row) {
 		this.row = row;
 		this.col = 1;
-		this.data = new Object[row][col];
+		this.data = new double[row][col];
 		setZeros(0);
 	}
 
-	public Object getData(int atRow, int atCol) {
+	public Matrix(double data[][]) {
+		this.row = data.length;
+		this.col = data[0].length;
+		this.data = data;
+	}
+
+	public int getRow() {
+		return this.row;
+	}
+
+	public int getCol() {
+		return this.col;
+	}
+
+	public double getData(int atRow, int atCol) {
 		return this.data[atRow][atCol];
 	}
 
-	public void setData(int atRow, int atCol, Object item) {
+	public void setData(int atRow, int atCol, double item) {
 		this.data[atRow][atCol] = item;
 	}
 
-	private void setZeros(Object object) {
+	private void setZeros(double item) {
 		for (int i = 0; i < this.row; i++) {
 			for (int j = 0; j < this.col; j++) {
-				this.data[i][j] = object;
+				this.data[i][j] = item;
 			}
 		}
 	}
@@ -78,12 +92,12 @@ public class Matrix {
 		Matrix c = copy(a);
 		for (int i = 0; i < a.row; i++) {
 			for (int j = 0; j < a.col; j++) {
-				c.data[i][j] = (double)a.data[i][j] * b;
+				c.data[i][j] = (double) a.data[i][j] * b;
 			}
 		}
 		return c;
 	}
-	
+
 	// c = a + b
 	public static Matrix add(Matrix a, Matrix b) {
 		if (a.row == b.row && a.col == b.col) {
@@ -126,8 +140,8 @@ public class Matrix {
 
 	public static Matrix copy(Matrix a) {
 		Matrix c = new Matrix(a.row, a.col);
-		for(int i = 0; i < a.row; i++) {
-			for(int j = 0; j < a.col; j++) {
+		for (int i = 0; i < a.row; i++) {
+			for (int j = 0; j < a.col; j++) {
 				c.data[i][j] = a.data[i][j];
 			}
 		}
@@ -136,12 +150,69 @@ public class Matrix {
 
 	public static double sum(Matrix a) {
 		double sum = 0.0;
-		for(int i = 0 ;i < a.row; i++) {
-			for(int j = 0; j < a.col; j++) {
-				sum += (double)a.getData(i, j);
+		for (int i = 0; i < a.row; i++) {
+			for (int j = 0; j < a.col; j++) {
+				sum += (double) a.getData(i, j);
 			}
 		}
 		return sum;
 	}
+
+	//Invert Matrix
+	//ref:
+	//	- https://www.khanacademy.org/math/algebra-home/alg-matrices/alg-determinants-and-inverses-of-large-matrices/v/inverting-3x3-part-2-determinant-and-adjugate-of-a-matrix
+	//  - http://www.mathsmutt.co.uk/files/det.htm
+	//  - least squares estimates z = ((x'x)^-1)x'y : https://onlinecourses.science.psu.edu/stat501/node/382
 	
+	public static double getMinorOf(int atRow, int atCol, Matrix m) {
+		double sum = 0.0;
+		double a = 1;
+		for (int j = 0, r = (atRow + 1) % m.row, c = (atCol + 1) % m.col; j < m.row - 1; j++, r = ++r % m.row, c = ++c
+				% m.col) {
+			//System.out.println("r :" + r + " c :" + c + " " + m.getData(r, c));
+			a *= m.getData(r, c);
+		}
+		sum += a;
+		//System.out.println("a : " + a);
+
+		double b = 1;
+		for (int j = 0, r = (atRow + (m.row - 1)) % m.row, c = (atCol + 1) % m.col; j < m.row - 1; j++, r = (--r<0)?m.row-1:r
+				% m.row, c = ++c % m.col) {
+			//System.out.println("r :" + r + " c :" + c + " " + m.getData(Math.abs(r), c));
+			b *= m.getData(Math.abs(r), c);
+
+		}
+		//System.out.println("b : " + b);
+		sum -= b;
+		//System.out.println("sum: " + sum);
+		return sum;
+	}
+	
+	public static double det(Matrix m) {
+		double sum = 0.0;
+		for(int i = 0 ; i < m.col; i++) {
+			if( i%2 == 0) {
+				sum += m.getData(0, i)*Matrix.getMinorOf(0, i, m);
+			}else {
+				sum += m.getData(0, i)*Matrix.getMinorOf(0, i, m);
+			}
+		}
+		return sum;
+	}
+
+	public static Matrix adj(Matrix m) {
+		Matrix adj_m = new Matrix(m.row, m.col);
+		for (int i = 0; i < m.row; i++) {
+			for (int j = 0; j < m.col; j++) {
+				double v = getMinorOf(i, j, m);
+				adj_m.setData(i, j, v);
+			}
+		}
+		return adj_m;
+	}
+	
+	public static Matrix invert(Matrix m) {
+		double det = det(m);
+		return multiply(m, 1/det);
+	}
 }

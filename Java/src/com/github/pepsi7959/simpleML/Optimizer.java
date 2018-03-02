@@ -24,7 +24,7 @@ public class Optimizer {
 
 		// Adjust a bias
 		// Wi := Wi - lr*(sum(td)/numberOfTd)
-		//w.setData(0, 0, (double) weight.getData(0, 0) - lr * (Matrix.sum(td) / tdNum));
+		// w.setData(0, 0, (double) weight.getData(0, 0) - lr * (Matrix.sum(td) / tdNum));
 		
 		for (int j = 0; j < w.row; j++) {
 			double sumTd = 0.0;
@@ -35,7 +35,7 @@ public class Optimizer {
 			// W[j] = W[j] - learningRate/numOfInput * SUM(( Value[i] -
 			// ExpectedValue[i])*input[i])
 			System.out.println(String.format("W%d = %f", j, weight.getData(j, 0)));
-			w.setData(j, 0, (double) weight.getData(j, 0) - lr * (sumTd / tdNum));
+			w.setData(j, 0, weight.getData(j, 0) - lr * (sumTd / tdNum));
 		}
 		w.copyTo(weight);
 	}

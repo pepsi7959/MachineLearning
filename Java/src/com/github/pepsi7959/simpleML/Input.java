@@ -71,22 +71,7 @@ public class Input extends Matrix {
 
 	@Override
 	public void Print() {
-		DecimalFormat df = new DecimalFormat("#.##");
-		System.out.print("Matrix : [");
-		for (int i = 0; i < this.row; i++) {
-			System.out.print("[");
-			for (int j = 0; j < this.col; j++) {
-				System.out.print(df.format(this.data[i][j]));
-				if ((j + 1) < this.col) {
-					System.out.print(",");
-				}
-			}
-			if ((i + 1) < this.row)
-				System.out.print("],\n");
-			else
-				System.out.print("]\n");
-		}
-		System.out.print("]");
+		System.out.println(this.toString());
 	}
 
 	public static LinkedList<Double> expectedValueFromFile(String fileName) {
@@ -110,4 +95,25 @@ public class Input extends Matrix {
 		return ev;
 	}
 
+	@Override
+	public String toString() {
+		DecimalFormat df = new DecimalFormat("#.##");
+		StringBuilder strBuilder = new StringBuilder();
+		strBuilder.append("Matrix : [");
+		for (int i = 0; i < this.row; i++) {
+			strBuilder.append("[");
+			for (int j = 0; j < this.col; j++) {
+				strBuilder.append(df.format(this.data[i][j]));
+				if ((j + 1) < this.col) {
+					strBuilder.append(",");
+				}
+			}
+			if ((i + 1) < this.row)
+				System.out.print("],\n");
+			else
+				strBuilder.append("]\n");
+		}
+		strBuilder.append("]");
+		return strBuilder.toString();
+	}
 }

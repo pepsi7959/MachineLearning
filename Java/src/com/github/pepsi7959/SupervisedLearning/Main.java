@@ -1,4 +1,4 @@
-package SupervisedLearning;
+package com.github.pepsi7959.SupervisedLearning;
 
 public class Main {
 

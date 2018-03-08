@@ -1,4 +1,4 @@
-package UnsupervisedLearning;
+package com.github.pepsi7959.UnsupervisedLearning;
 
 import java.util.LinkedList;
 

@@ -3,17 +3,6 @@ package com.github.pepsi7959.simpleML;
 import java.util.LinkedList;
 
 public class Optimizer {
-	public Optimizer(Input in, Output out) {
-
-	}
-
-	public void RMSE(Output out, Output expected_out) {
-		for (int i = 0; i < out.row; i++) {
-			for (int j = 0; j < out.col; i++) {
-
-			}
-		}
-	}
 
 	/*
 	 * Y := W1*X1 + W0*X0 W0 : indicate as bias X0 : always is 1

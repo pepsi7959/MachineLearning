@@ -1,4 +1,4 @@
-package SupervisedLearning;
+package com.github.pepsi7959.SupervisedLearning;
 
 import java.util.LinkedList;
 import java.util.Iterator;

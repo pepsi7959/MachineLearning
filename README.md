@@ -2,17 +2,23 @@
   This is used for beginner to start learning machine-learning technology. It provides the both of basic and advance libraries.
 
 # Libraries
-  - __Linear Regression__
+  - __Linear Regression:__ 
     Basically, It will be used for finding mathematical model to predict value in the future that base on previouse values. This requires dataset which is CSV format.
-  - __Logistic Regression__
-    It wiil be used for binary classificaion. 
-  - __Neuron Network__
+  - __Logistic Regression:__
+    It will be used for binary classificaion. 
+  - __Neuron Network:__
     Coming soon
-  - __Deep Q Learning__
+  - __Deep Q Learning:__
     Coming soon
+    
 # Example
+  
   - Logistic Regression
   ```java
+  /* Prepare parameter */
+  double learningRate = 0.001;
+  int numOfStep = 1000000;
+  
   /* Read dataset from inputs.csv file */
   LinkedList<Input> inputs = Input.fromFile("inputs.csv");
   
@@ -24,7 +30,7 @@
   weight.random(0, 5);
 
   /* Create Logistic Regression object */
-  LogisticRegression LR = new LogisticRegression(inputs, ev, 0.001, 1000000, weight);
+  LogisticRegression LR = new LogisticRegression(inputs, ev, learningRate, numOfStep, weight);
   
   /* Train model unitil it reach number of step */
   LR.train();

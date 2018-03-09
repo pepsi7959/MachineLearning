@@ -12,6 +12,8 @@
     Coming soon
 # Cost fucntion
   ![](/docs/linear-regression/cost.png)
+# Optimization
+  - Gradient descent
 # Example
   - Linear Regression
   ```java

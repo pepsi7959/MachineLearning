@@ -14,11 +14,11 @@ public class TestLogisticRegression {
 
 		/* Read dataset from inputs.csv file */
 		LinkedList<Dataset> datasets = Dataset
-				.fromFile("src\\com\\github\\pepsi7959\\UnsupervisedLearning\\inputs.csv");
+				.fromFile("src\\com\\github\\pepsi7959\\simpleML\\logistic-regression-inputs.csv");
 
 		/* Read expected value from ExpectedValue.csv */
 		LinkedList<Double> ev = Dataset
-				.expectedValueFromFile("src\\com\\github\\pepsi7959\\UnsupervisedLearning\\ExpectedValue.csv");
+				.expectedValueFromFile("src\\com\\github\\pepsi7959\\simpleML\\logistic-regression-expectedValue.csv");
 
 		/* Initialize coefficient (weight) and random value from 0 to 5 */
 		Matrix weight = new Matrix(datasets.getFirst().getCol(), 1);

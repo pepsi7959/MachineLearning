@@ -13,11 +13,11 @@ public class TestLinearRegression {
 		int numOfStep = 10000;
 
 		/* Read dataset from inputs.csv file */
-		LinkedList<Dataset> datasets = Dataset.fromFile("src\\com\\github\\pepsi7959\\SupervisedLearning\\inputs.csv");
+		LinkedList<Dataset> datasets = Dataset.fromFile("src\\com\\github\\pepsi7959\\simpleML\\linear-regression-inputs.csv");
 
 		/* Read expected value from ExpectedValue.csv */
 		LinkedList<Double> ev = Dataset
-				.expectedValueFromFile("src\\com\\github\\pepsi7959\\SupervisedLearning\\ExpectedValue.csv");
+				.expectedValueFromFile("src\\com\\github\\pepsi7959\\simpleML\\linear-regression-expectedValue.csv");
 
 		/* Initialize coefficient (weight) and random value from 0 to 5 */
 		Matrix weight = new Matrix(datasets.getFirst().getCol(), 1);

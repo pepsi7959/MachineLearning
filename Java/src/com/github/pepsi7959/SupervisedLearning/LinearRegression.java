@@ -1,41 +1,35 @@
 package com.github.pepsi7959.SupervisedLearning;
 
-import java.util.LinkedList;
 import java.util.Iterator;
+import java.util.LinkedList;
 
 import com.github.pepsi7959.model.Dataset;
 import com.github.pepsi7959.model.Matrix;
-import com.github.pepsi7959.optimization.ActivationFunction;
-import com.github.pepsi7959.optimization.Optimizer;
+import com.github.pepsi7959.model.Model;
+import com.github.pepsi7959.optimization.Optimizer;;
 
-public class LogisticRegression {
+public class LinearRegression extends Model{
 
-	private int samplingRate = 1000;
-	private LinkedList<Dataset> datasets = null;// patch inputs
-	private LinkedList<Double> ev = null; // Expected Value
-	private double lr = 0.01; // Learning rate
-	private int step = 1000000; // steps
-	private Matrix w = null; // weight
-	private Matrix td = null; // temporal difference
-
-	public LogisticRegression(LinkedList<Dataset> datasets, LinkedList<Double> ev, double lr, int step, Matrix w) {
+	public LinearRegression(LinkedList<Dataset> datasets, LinkedList<Double> ev, double lr, int step, Matrix w) {
+		super();
 		this.datasets = datasets;
 		this.ev = ev;
 		this.lr = lr;
 		this.step = step;
 		if (w == null)
-			initializeWeight(datasets.getFirst().getRow(), 1);
+			initialize(datasets.getFirst().getRow(), 1);
 		else
 			this.w = w;
 	}
 
-	private void initializeWeight(int row, int col) {
+	private void initialize(int row, int col) {
 		this.w = new Matrix(row, col);
 		this.w.random(0, 100);
 	}
 
-	private double hypothesis(Dataset dataset, Matrix w) {
-		return ActivationFunction.sinusoid(Matrix.multiply(dataset, w));
+	@Override
+	public double hypothesis(Dataset dataset, Matrix w) {
+		return Matrix.multiply(dataset, w);
 	}
 
 	/*
@@ -43,13 +37,13 @@ public class LogisticRegression {
 	 * value between input and expected value and even store temporal difference
 	 * into matrix td
 	 */
-	private double costFunc() {
+	@Override
+	public double costFunc() {
 
 		Iterator<Dataset> iterOfInputs = this.datasets.iterator();
 		this.td = new Matrix(datasets.size(), 1);
 		int numOfInput = datasets.size();
 		double evi = 0.0;
-		double jTheta = 0.0;
 		double hThetaX = 0.0;
 		double sum = 0.0;
 		int i = 0;
@@ -59,17 +53,18 @@ public class LogisticRegression {
 			evi = ev.get(i);
 			in = iterOfInputs.next();
 			hThetaX = hypothesis(in, w);
-			jTheta = -evi * Math.log(hThetaX) - (1.0 - evi) * Math.log(1-hThetaX);
-			double expectedVal = evi;
-			double tdValue = (hThetaX - expectedVal);
-			sum += jTheta;
+			
+			//Find cost value
+			double tdValue = (hThetaX - evi);
 			td.setData(i, 0, tdValue);
+			sum += tdValue;
 			i++;
 		}
 
 		return sum/numOfInput;
 	}
 
+	@Override
 	public Matrix train() {
 		double costVal = 0.0;
 		int s = 0;
@@ -83,7 +78,7 @@ public class LogisticRegression {
 			System.out.println("\rStep: " + s + " Cost value: " + costVal);
 			Optimizer.gradientDescent(this.datasets, this.lr, this.w, this.td);
 		}
-		System.out.println("========================================================================================");
+		System.out.println("\n========================================================================================");
 		System.out.println("Step : " + s);
 		System.out.println("Error: " + costVal);
 		System.out.println("out:");
@@ -91,7 +86,8 @@ public class LogisticRegression {
 		return this.w;
 	}
 
-	public void Test(LinkedList<Dataset> datasets, LinkedList<Double> expectedValue) {
+	@Override
+	public void test(LinkedList<Dataset> datasets, LinkedList<Double> expectedValue) {
 		LinkedList<Dataset> in = (datasets != null) ? datasets : this.datasets;
 		LinkedList<Double> ev = (expectedValue != null) ? expectedValue : this.ev;
 		Iterator<Dataset> itOfInput = in.iterator();

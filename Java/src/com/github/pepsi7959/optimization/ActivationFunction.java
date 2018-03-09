@@ -1,4 +1,4 @@
-package com.github.pepsi7959.simpleML;
+package com.github.pepsi7959.optimization;
 
 public class ActivationFunction {
 	public static double sinusoid(double x) {

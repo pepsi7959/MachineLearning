@@ -10,7 +10,8 @@
     Coming soon
   - __Deep Q Learning:__
     Coming soon
-    
+# Cost fucntion
+  ![](/docs/linear-regression/cost.png)
 # Example
   
   - Logistic Regression

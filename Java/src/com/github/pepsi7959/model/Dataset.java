@@ -1,4 +1,4 @@
-package com.github.pepsi7959.simpleML;
+package com.github.pepsi7959.model;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -7,16 +7,16 @@ import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.LinkedList;
 
-public class Input extends Matrix {
+public class Dataset extends Matrix {
 
-	public Input(int row, int col) {
+	public Dataset(int row, int col) {
 		super(row, col);
 	}
 
-	public static LinkedList<Input> fromFile(String fileName) {
+	public static LinkedList<Dataset> fromFile(String fileName) {
 		File file = new File(fileName);
 		BufferedReader br;
-		LinkedList<Input> inputs = new LinkedList<Input>();
+		LinkedList<Dataset> datasets = new LinkedList<Dataset>();
 		try {
 			
 			br = new BufferedReader(new FileReader(file));
@@ -32,28 +32,28 @@ public class Input extends Matrix {
 					br.close();
 					throw new RuntimeException(String.format("Invalid input: size of header is not match header(%s)\\{%d\\} input(%s)\\{%d\\}", header, header_sz, line, str.length));
 				}
-				Input m = new Input(1, str.length);
+				Dataset m = new Dataset(1, str.length);
 				for( int i = 0 ; i < str.length ; i++) {
 					m.setData(0, i, Double.parseDouble(str[i].trim()));
 				}
-				inputs.addLast(m);
+				datasets.addLast(m);
 			}
-			System.out.println("Number of elements : " + inputs.size());
+			System.out.println("Number of elements : " + datasets.size());
 			br.close();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
-		return inputs;
+		return datasets;
 	}
 
-	public static Matrix getMatrix(LinkedList<Input> inputs) {
-		int row = inputs.size();
-		int col = inputs.get(0).col;
+	public static Matrix getMatrix(LinkedList<Dataset> datasets) {
+		int row = datasets.size();
+		int col = datasets.get(0).col;
 		Matrix m = new Matrix(row, col);
 		for(int i = 0 ;i < row ; i++){
-			Matrix mAtRow = (Matrix)inputs.get(i);
+			Matrix mAtRow = (Matrix)datasets.get(i);
 			for( int j = 0; j < col; j++) {
 				m.data[i][j] = mAtRow.getData(0, j);
 			}

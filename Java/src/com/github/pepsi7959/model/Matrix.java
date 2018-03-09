@@ -1,4 +1,4 @@
-package com.github.pepsi7959.simpleML;
+package com.github.pepsi7959.model;
 
 import java.text.DecimalFormat;
 

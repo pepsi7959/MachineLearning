@@ -10,41 +10,70 @@
     Coming soon
   - __Deep Q Learning:__
     Coming soon
-# Cost function
-  - Linear Reression 
-    ![](docs/linear-regression/cost.png)
-  - Logistic Regression
-  
+# Cost fucntion
+  ![](/docs/linear-regression/cost.png)
 # Optimization
   - Gradient descent
 # Example
-  
+  - Linear Regression
+  ```java
+  /* Prepare parameter */
+  double learningRate = 0.0001;
+  int numOfStep = 10000;
+
+  /* Read dataset from inputs.csv file */
+  LinkedList<Dataset> datasets = Dataset.fromFile("src\\com\\github\\pepsi7959\\SupervisedLearning\\inputs.csv");
+
+  /* Read expected value from ExpectedValue.csv */
+  LinkedList<Double> ev = Dataset
+      .expectedValueFromFile("src\\com\\github\\pepsi7959\\SupervisedLearning\\ExpectedValue.csv");
+
+  /* Initialize coefficient (weight) and random value from 0 to 5 */
+  Matrix weight = new Matrix(datasets.getFirst().getCol(), 1);
+  weight.random(0, 5);
+
+  /* Create Linear Regression object */
+  LinearRegression LR = new LinearRegression(datasets, ev, learningRate, numOfStep, weight);
+
+  /* Train model until it reach number of step */
+  LR.train();
+
+  /*
+   * Test model by using the inputs, but we recommend you should have dataset for
+   * testing the model particularly
+   */
+  LR.test(datasets, ev);
+  ```
   - Logistic Regression
   ```java
   /* Prepare parameter */
   double learningRate = 0.001;
   int numOfStep = 1000000;
-  
+
   /* Read dataset from inputs.csv file */
-  LinkedList<Input> inputs = Input.fromFile("inputs.csv");
-  
+  LinkedList<Dataset> datasets = Dataset
+      .fromFile("src\\com\\github\\pepsi7959\\UnsupervisedLearning\\inputs.csv");
+
   /* Read expected value from ExpectedValue.csv */
-  LinkedList<Double> ev = Input.expectedValueFromFile("ExpectedValue.csv");
-  
-  /* Initiaize coefficient (weight) and random value from 0 to 5 */
-  Matrix weight = new Matrix(inputs.getFirst().getCol(), 1);
+  LinkedList<Double> ev = Dataset
+      .expectedValueFromFile("src\\com\\github\\pepsi7959\\UnsupervisedLearning\\ExpectedValue.csv");
+
+  /* Initialize coefficient (weight) and random value from 0 to 5 */
+  Matrix weight = new Matrix(datasets.getFirst().getCol(), 1);
   weight.random(0, 5);
 
   /* Create Logistic Regression object */
-  LogisticRegression LR = new LogisticRegression(inputs, ev, learningRate, numOfStep, weight);
-  
-  /* Train model unitil it reach number of step */
+  LogisticRegression LR = new LogisticRegression(datasets, ev, learningRate, numOfStep, weight);
+
+  /* Train model until it reach number of step */
   LR.train();
-  
-  /* Test model by using the inputs, but we recommend you should have dataset for testing the model particularly */
-  LR.Test(inputs, ev);
+
+  /*
+   * Test model by using the inputs, but we recommend you should have dataset for
+   * testing the model particularly
+   */
+  LR.Test(datasets, ev);
   ```
-  - Linear Regression
-    Coming soon
+
   - Neuron Network
     Coming soon

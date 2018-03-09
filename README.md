@@ -10,7 +10,12 @@
     Coming soon
   - __Deep Q Learning:__
     Coming soon
-    
+# Cost function
+  - Linear Reression 
+  - Logistic Regression
+  
+# Optimization
+  - Gradient descent
 # Example
   
   - Logistic Regression

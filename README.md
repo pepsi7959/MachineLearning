@@ -12,6 +12,7 @@
     Coming soon
 # Cost function
   - Linear Reression 
+    ![](docs/linear-regression/cost.png)
   - Logistic Regression
   
 # Optimization

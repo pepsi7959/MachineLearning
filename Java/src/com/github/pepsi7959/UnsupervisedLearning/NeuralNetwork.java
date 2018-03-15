@@ -1,126 +1,123 @@
 package com.github.pepsi7959.UnsupervisedLearning;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 
 import com.github.pepsi7959.model.Dataset;
 import com.github.pepsi7959.model.Matrix;
-import com.github.pepsi7959.optimization.ActivationFunction;
 
 public class NeuralNetwork {
-	private LinkedList<Dataset> datasets;
+
+	private LinkedList<Dataset> inputs;
 	private LinkedList<Double> ev;
-	private double nLayer = 1;
-	private Matrix weight;
-	private double step;
-	private double lr;
-	
+	private int numOfLayer = 0;
+	private ArrayList<Layer> layers;
+	private int step;
 
-	public NeuralNetwork(LinkedList<Dataset> datasets, LinkedList<Double> ev, Matrix weight) {
-		this.datasets = datasets;
-		this.ev = ev;
-		this.weight = weight;
-		initialize();
+	public NeuralNetwork(LinkedList<Dataset> inputs, LinkedList<Double> ev, int step) {
+		this.setInputs(inputs);
+		this.setEv(ev);
+		this.layers = new ArrayList<Layer>();
+		this.step = step;
+	}
+
+	public void addNewLayer(Layer layer) {
+		this.layers.add(layer);
 	}
 	
-	public NeuralNetwork(LinkedList<Input> inputs, LinkedList<Double> ev, Matrix weight, int nLayer) {
+	public void backwardPropagation(Matrix input, Layer layer) {
+
+	}
+
+	public void forwardPropagation(Dataset input, ArrayList<Layer> layers, int atLayer) {
+		Layer layer = layers.get(atLayer);
+		for (int i = 0; i < layer.getnUnit(); i++) {
+
+			// Input layer
+			if (atLayer == 0) {
+				layer.setOutput(input);
+				return;
+
+				// Hidden and output layer
+			} else {
+				Layer prev_layer = layers.get(atLayer - 1);
+				Unit unit = layer.getUnits().get(i);
+				unit.output = unit.activatedFunc(unit.hypothesis(prev_layer.output));
+				System.out.println("Unit " + (i + 1) + " : " + unit.output);
+				layer.output.setData(0, i + 1, unit.output);
+			}
+		}
+	}
+
+	public void train() {
+
+		double err = 0.0;
+		Iterator<Dataset> iter_in = this.inputs.iterator();
+		Iterator<Double> iter_ev = this.ev.iterator();
+
+		// The Step will be used for training model
+		for (int s = 0; s < this.step; s++) {
+
+			// Select a input to train model
+			System.out.println("======== Step " + s + "========");
+			iter_in = this.inputs.iterator();
+			while (iter_in.hasNext()) {
+
+				Dataset in = iter_in.next();
+
+				// Forward Propagation
+				for (int l = 0; l < getNumOfLayer(); l++) {
+					System.out.println("Layer : " + l);
+					this.forwardPropagation(in, this.layers, l);
+					System.out.println("Layer Output: " + this.layers.get(l).getOutput().toString());
+				}
+
+				// Loss function
+				double ev = iter_ev.next();
+				double delta = this.layers.get(this.layers.size() - 1).output.getData(0, 1) - ev;
+
+				// Backward Propagation
+				for (int l = getNumOfLayer() - 1; l >= 0; l--) {
+					this.backwardPropagation(in, this.layers.get(l));
+				}
+				System.out.println("\n-------------------------\n");
+				System.out.println("Delta: " + delta);
+				System.out.println("Last Layer Output: " + this.layers.get(this.layers.size() - 1).output.toString());
+				System.out.println("\n=========================\n");
+			}
+
+			if (err < 0.01) {
+				break;
+			}
+		}
+	}
+
+	public int getNumOfLayer() {
+		return this.layers.size();
+	}
+
+	public LinkedList<Double> getEv() {
+		return ev;
+	}
+
+	public void setEv(LinkedList<Double> ev) {
+		this.ev = ev;
+	}
+
+	public LinkedList<Dataset> getInputs() {
+		return inputs;
+	}
+
+	public void setInputs(LinkedList<Dataset> inputs) {
 		this.inputs = inputs;
-		this.nLayer = nLayer;
-		this.ev = ev;
-		this.weight = weight;
-		initialize();
 	}
 
-	public void initialize() {
-		this.step = 1000;
-		this.lr = 0.0001;
+	public int getStep() {
+		return step;
 	}
 
-	public LinkedList<Dataset> sample() {
-		return null;
-	}
-
-	public double costFunc(Dataset dataset, Matrix w) {
-		return Matrix.dot(w, dataset);
-	}
-
-	public void autoTrain() {
-		for (int i = 0; i < this.step; i++) {
-
-		}
-	}
-
-	public Matrix train() {
-		Matrix td = new Matrix(this.datasets.size());
-		Iterator<Dataset> dataset = this.datasets.iterator();
-		int row = 0;
-		while (dataset.hasNext()) {
-			Dataset in = (Dataset) dataset.next();
-			double costValue = costFunc(in, this.weight);
-			td.setData(row, 0, costValue);
-			double afValue = ActivationFunction.sinusoid(costValue);
-			System.out.println("input " + in.getData(0, 0)+", "+ in.getData(0, 1) + " output : " + costValue + " activated : " + afValue);
-			row++;
-		}
-		return td;
-	}
-	
-	public static Matrix train(LinkedList<Layer> layers) {
-		Iterator<Layer> iter_layer = layers.iterator();
-		Layer l = null;
-		int i = 0;
-		while( iter_layer.hasNext() ) {
-			l = iter_layer.next();
-			System.out.println("Layer "+i);
-			
-			i++;
-		}
-		return l.weight;
-	}
-	
-	static class Layer{
-		private LinkedList<Input> inputs;
-		private LinkedList<Input> outputs;
-		private Matrix weight;
-		private int dim;
-		private Layer next = null;
-		
-		public Layer(LinkedList<Input> inputs, Matrix weight, int dim) {
-			this.inputs = inputs;
-			this.weight = weight;
-			this.dim = dim;
-		}
-		
-		public Layer(int dim) {
-			this.dim = dim;
-		}
-		
-		
-		public void bind(Layer l) { this.next = l;}
-		
-		
-		public static LinkedList<Input> forwardProp(LinkedList<Input> inputs, Matrix Weight, int dim_outputs) {
-			LinkedList<Input> outputs = new LinkedList<Input>();
-			return outputs;
-		}
-		
-		public static void main(String[] args) {
-			LinkedList<Input> inputs = Input.fromFile("src\\UnsupervisedLearning\\inputs.csv");
-			Matrix weight = new Matrix(inputs.getFirst().getRow(), 1);
-			weight.random(0, 5);
-			
-
-			Layer l0 = new Layer(inputs, weight, 2);
-			Layer l1 = new Layer(2);
-			Layer l2 = new Layer(1);
-			
-			LinkedList<Layer> layers = new LinkedList<Layer>();
-			layers.addLast(l0);
-			layers.addLast(l1);
-			layers.addLast(l2);
-			
-			NeuralNetwork.train(layers);
-			
-		}
+	public void setStep(int step) {
+		this.step = step;
 	}
 }

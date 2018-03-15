@@ -2,8 +2,6 @@ package com.github.pepsi7959.model;
 
 import java.util.LinkedList;
 
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
-
 public abstract class Model{
 
 	protected int samplingRate = 1000;// sampling dataset
@@ -14,25 +12,15 @@ public abstract class Model{
 	protected Matrix w = null; // weight
 	protected Matrix td = null; // temporal difference
 	
-	void initialize() {
-		throw new NotImplementedException();
-	}
+	void initialize() {}
 	
-	protected double hypothesis(Dataset dataset, Matrix w) {
-		throw new NotImplementedException();
-	}
+	protected abstract double hypothesis(Dataset dataset, Matrix w);
 	
-	protected double costFunc() {
-		throw new NotImplementedException();
-	}
+	protected abstract double costFunc();
 	
-	protected Matrix train() {
-		throw new NotImplementedException();
-	}
+	protected abstract Matrix train();
 	
-	protected void test(LinkedList<Dataset> datasets, LinkedList<Double> expectedValue) {
-		throw new NotImplementedException();
-	}
+	protected abstract void test(LinkedList<Dataset> datasets, LinkedList<Double> expectedValue);
 
 	public int getSamplingRate() {
 		return samplingRate;

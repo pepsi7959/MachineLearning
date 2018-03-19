@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/pepsi7959/MachineLearning.svg?branch=master)](https://travis-ci.org/pepsi7959/MachineLearning)
+
 # Machine Learning
   This is used for beginner to start learning machine-learning technology. It provides the both of basic and advance libraries.
 

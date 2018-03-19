@@ -1,4 +1,12 @@
+
+[![GitHub release](https://img.shields.io/github/release/qubyte/rubidium.svg)](https://github.com/pepsi7959/MachineLearning)
+[![GitHub license](https://img.shields.io/github/license/pepsi7959/MachineLearning.svg)](https://github.com/pepsi7959/MachineLearning/blob/master/LICENSE)
+![Java](https://img.shields.io/badge/java-v1.8-lightgrey.svg)
+[![GitHub issue comments](https://img.shields.io/github/issues/detail/comments/badges/shields/979.svg)](https://github.com/pepsi7959/MachineLearning)
 [![Build Status](https://travis-ci.org/pepsi7959/MachineLearning.svg?branch=master)](https://travis-ci.org/pepsi7959/MachineLearning)
+
+
+
 
 # Machine Learning
   This is used for beginner to start learning machine-learning technology. It provides the both of basic and advance libraries.

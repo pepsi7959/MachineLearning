@@ -15,7 +15,7 @@ public class TestNeuralNetwork {
 				.expectedValueFromFile("src\\com\\github\\pepsi7959\\simpleML\\nn-expectedValue.csv");
 
 		int numOfInput = inputs.getFirst().getCol();
-		NeuralNetwork nn = new NeuralNetwork(inputs, ev, 5);
+		NeuralNetwork nn = new NeuralNetwork(inputs, ev, 2);
 
 		// Design your own hidden layer
 
